@@ -1,5 +1,7 @@
+
 let filterContentList = document.querySelectorAll(".filter-content")
 let expandContentButtons = document.querySelectorAll(".expand-filter-button")
+
 document.querySelectorAll(".filter-header").forEach(
     (e, i) => {
         e.addEventListener("click", () => {
@@ -11,10 +13,13 @@ document.querySelectorAll(".filter-header").forEach(
                 } else {
                     content.style.maxHeight = content.scrollHeight + "px";
                 }
+                content.classList.toggle("expanded")
+
             }
         )
     }
 )
+
 let menu = document.getElementsByClassName("filter-menu")[0]
 let toggle = document.getElementsByClassName("toggle-button") [0]
 
@@ -22,4 +27,10 @@ toggle.addEventListener("click", () => {
     menu.classList.toggle("active")
     toggle.classList.toggle("bx-menu")
     toggle.classList.toggle("bx-chevron-right")
+})
+
+let search_button = document.querySelectorAll(".search-button")[0]
+
+search_button.addEventListener("click", (e)  => {
+    e.preventDefault()
 })

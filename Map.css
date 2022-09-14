@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'); /* General */
-
 html, body, #map {
     width: 100%;
     height: 100vh;
@@ -42,6 +40,7 @@ html, body, #map {
 
 .filter-menu.active {
     left: 25px;
+
 }
 
 .filter-menu .filter-menu-header {
@@ -96,26 +95,49 @@ html, body, #map {
 
 .filter-menu .filter-options {
     max-height: 400px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top : 10px;
+    margin-top: 10px;
     margin-bottom: 20px;
-    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+.filter-menu .filter-options .filter .search-form {
+    width: 100%;
+    position: relative;
+}
+
+.filter-menu .filter-options .filter .search-city-input {
+    width: 100%;
+    border-radius: 25px;
+    border: none;
+    margin-top: 2px;
+    padding: 5px 10px 5px 40px;
+}
+
+.filter-menu .filter-options .filter .search-form .search-button {
+    position: absolute;
+    background: none;
+    border:none;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
 }
 
 .filter-menu .filter-options .filter {
-    color:white;
-    font-size: 18px;
-    padding-left: 5px;
-    padding-top: 5px;
+    width: 85%;
 }
 
 .filter-menu .filter-options .filter-header {
     display: flex;
-    padding: 5px;
     border: 2px solid white;
+    padding: 5px 5px 5px 5px;
     border-radius: 25px;
     cursor: pointer;
+    color: white;
+    overflow: hidden;
 }
 
 .filter-menu .filter-options .filter-header:hover {
@@ -128,14 +150,22 @@ html, body, #map {
 }
 
 .filter-menu .filter-options .filter-content {
+    color: white;
     width: 100%;
     max-height: 0;
-    margin: 5px 5px 5px 5px;
     word-break: break-all;
     white-space: normal;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
+    transition: max-height 0.3s ease-out, padding-left 0.5s, padding-right 0.5s;
+    margin-left: 0;
+    padding-top: 0;
 }
 
+.filter-menu .filter-options .filter-content.expanded {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
 
