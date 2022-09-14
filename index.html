@@ -3,61 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <title>WE4ALL Map</title>
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
           integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
           crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
             integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
             crossorigin=""></script>
-    <style>
-        html, body, #map {
-            width: 100%;
-            height: 100%;
-
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="Map.css" />
 </head>
 <body>
-    <div id="map"></div>
-    <script>
-        const map = L.map('map', {
-            center: [51.330, 10.453],
-            zoom: 6,
-            minZoom: 6,
-            maxZoom: 9
-        });
-
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 10,
-            attribution: '© OpenStreetMap',
-        }).addTo(map);
-
-        const loadCities = async () => {
-            const response = await fetch('http://localhost:8080/cities');
-
-            return await response.json();
-        };
-
-        const placeMarkers = (cities) => {
-            const we4AllIcon = L.icon({
-                iconUrl: "./Assets/we4all_logo.png",
-                iconSize: [40,40]
-            })
-
-            const iconOptions = {
-                draggable: false,
-                icon: we4AllIcon,
-            }
-
-            for (let city in cities) {
-                const obj = cities[city];
-                L.marker([obj.lat, obj.long],iconOptions).bindPopup(`${obj.partners} Partner`).addTo(map);
-            }
-        };
-
-        loadCities().then(placeMarkers);
-    </script>
+<div id="map"></div>
+<div class="filter-menu">
+    <header class="filter-menu-header">
+        <div class="header-title">
+            <img src="./Assets/we4all_logo.png " alt="">
+            <span class="header-text">
+                Filter
+                 </span>
+        </div>
+        <i class="bx bx-menu toggle-button"></i>
+    </header>
+    <hr/>
+    <div class="filter-options">
+        <div class="filter">
+            <div class="filter-header">
+                <div class="filter-name"> Partnertyp</div>
+                <i class="bx bx-plus expand-filter-button"></i>
+            </div>
+            <div class="filter-content ">
+                <input type="radio" id="html" name="fav_language" value="HTML">
+                <label for="html">Beide</label><br>
+                <input type="radio" id="css" name="fav_language" value="CSS">
+                <label for="css">Designer</label><br>
+                <input type="radio" id="javascript" name="fav_language" value="JavaScript">
+                <label for="javascript">Manufaktur</label>
+            </div>
+        </div>
+        <div class="filter">
+            <div class="filter-header">
+                <div class="filter-name"> Test Filter 1</div>
+                <i class="bx bx-plus expand-filter-button"></i>
+            </div>
+            <div class="filter-content ">
+                Bottom Text
+            </div>
+        </div>
+        <div class="filter">
+            <div class="filter-header">
+                <div class="filter-name"> Test Filter 2</div>
+                <i class="bx bx-plus expand-filter-button"></i>
+            </div>
+            <div class="filter-content ">
+                <p>
+                    Bottom Text
+                </p>
+            </div>
+        </div>
+        <div class="filter">
+            <div class="filter-header">
+                <div class="filter-name"> Test Filter 3</div>
+                <i class="bx bx-plus expand-filter-button"></i>
+            </div>
+            <div class="filter-content ">
+                Bottom Text
+            </div>
+        </div>
+        <div class="filter">
+            <div class="filter-header">
+                <div class="filter-name"> Test Filter 4</div>
+                <i class="bx bx-plus expand-filter-button"></i>
+            </div>
+            <div class="filter-content ">
+                Bottom Text
+            </div>
+        </div>
+        <div class="filter">
+            <div class="filter-header">
+                <div class="filter-name"> Test Filter 5</div>
+                <i class="bx bx-plus expand-filter-button"></i>
+            </div>
+            <div class="filter-content ">
+                Bottom Text
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./Map.js"></script>
+<script src="./Menu.js"></script>
 </body>
 </html>
