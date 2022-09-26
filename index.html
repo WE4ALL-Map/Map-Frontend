@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
             integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
             crossorigin=""></script>
-    <link rel="stylesheet" href="Map.css" />
+    <link rel="stylesheet" href="styles/map.css" />
 </head>
 <body>
 <div id="map"></div>
@@ -29,7 +29,7 @@
         <div class="filter">
             <form class="search-form">
                 <input class="search-city-input" type="text">
-                <button class="bx bx-search search-button"></button>
+                <button class="bx bx-x search-button"></button>
             </form>
         </div>
         <div class="filter">
@@ -72,7 +72,8 @@
         </div>
     </div>
 </div>
-<script src="./Map.js"></script>
-<script src="./Menu.js"></script>
+<script type="module" src="scripts/map.js"></script>
+<script src="scripts/menu.js"></script>
+<script type="module" src="scripts/citySearch.js"> </script>
 </body>
 </html>
