@@ -202,4 +202,17 @@ input:focus {
     margin-bottom: 10px;
 }
 
+.numbered-pin {
+    background-image: url("../Assets/pin.png");
+    text-align: center;
+    background-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.pin-number {
+    margin-bottom: 10px;
+    color: white;
+    font-size: large;
+}
