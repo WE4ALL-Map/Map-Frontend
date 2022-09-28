@@ -14,20 +14,23 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let markers = []
 
-const we4AllIcon = L.icon({
-    iconUrl: "./Assets/we4all_logo.png",
-    iconSize: [40, 40]
-})
-
-const iconOptions = {
-    draggable: false,
-    icon: we4AllIcon,
-}
-
 const placeMarkers = (cities) => {
-
     for (let city in cities) {
         const obj = cities[city];
+
+        const numberedPin = L.divIcon({
+            className: "numbered-pin",
+            iconSize: [40, 50],
+            iconAnchor: [20, 50],
+            popupAnchor: [0, -40],
+            html: `<span class='pin-number'>${obj.partners}</span>`
+        })
+    
+        const iconOptions = {
+            draggable: false,
+            icon: numberedPin,
+        }
+
         markers.push(
             {
                 "city": city,
@@ -58,4 +61,3 @@ export const placeFilteredMarkers = (cityName = "") => {
 }
 
 loadCities().then(placeMarkers);
-
