@@ -56,8 +56,11 @@ search.addEventListener('input', function() {
                 autocompleteSuggestions.appendChild(suggestion);
             }
         }
-        if(autocompleteSuggestions.children.length === 0 || val.length === 0) {
+        if(val.length === 0) {
             placeFilteredMarkers()
+            removeSuggestionList()
+        }
+        else if(autocompleteSuggestions.children.length === 0) {
             removeSuggestionList()
         }
     }

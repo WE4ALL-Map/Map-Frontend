@@ -47,17 +47,17 @@ const clearMarkers = () => {
     })
     markers = []
 }
-export const placeFilteredMarkers = async (cityName = "") => {
-    clearMarkers()
+export const placeFilteredMarkers = (cityName = "") => {
 
     if (cityName === "") {
         loadCities().then(placeMarkers);
         return
     }
 
-    let filteredCity = await loadFilteredCities(cityName)
-
-    placeMarkers(filteredCity)
+    loadFilteredCities(cityName).then((filteredCity) =>{
+        clearMarkers()
+        placeMarkers(filteredCity)
+    })
 }
 
 loadCities().then(placeMarkers);
