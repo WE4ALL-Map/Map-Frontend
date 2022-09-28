@@ -22,7 +22,7 @@ const placeMarkers = (cities) => {
             className: "numbered-pin",
             iconSize: [40, 50],
             iconAnchor: [20, 50],
-            popupAnchor: [20, 0],
+            popupAnchor: [0, -40],
             html: `<span class='pin-number'>${obj.partners}</span>`
         })
     
