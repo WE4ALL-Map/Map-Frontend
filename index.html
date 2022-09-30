@@ -14,7 +14,7 @@
 </head>
 <body>
 <div id="map"></div>
-<div class="filter-menu">
+<div id="filter-menu">
     <header class="filter-menu-header">
         <div class="header-title">
             <img src="./Assets/we4all_logo.png " alt="">
@@ -22,26 +22,15 @@
                 Filter
                  </span>
         </div>
-        <i class="bx bx-menu toggle-button"></i>
+        <i class="bx bx-menu" id="toggle-menu-open-button"></i>
     </header>
     <hr/>
     <div class="filter-options">
-        <div class="filter">
-            <form class="search-form">
-                <input class="search-city-input" type="text">
-                <button class="bx bx-x search-button"></button>
+        <div class="filter" id="city-search-filter">
+            <form id="search-city-form">
+                <input  id="search-city-text-field" type="text">
+                <button class="bx bx-x" id="delete-city-search-button"></button>
             </form>
-        </div>
-        <div class="filter">
-            <div class="filter-header">
-                <div class="filter-name"> Test Filter 2</div>
-                <i class="bx bx-plus expand-filter-button"></i>
-            </div>
-            <div class="filter-content ">
-                <p>
-                    Bottom Text
-                </p>
-            </div>
         </div>
         <div class="filter">
             <div class="filter-header">
@@ -73,7 +62,7 @@
     </div>
 </div>
 <script type="module" src="scripts/map.js"></script>
-<script src="scripts/menu.js"></script>
+<script src="scripts/filterMenu.js"></script>
 <script type="module" src="scripts/citySearch.js"> </script>
 </body>
 </html>

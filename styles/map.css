@@ -1,6 +1,7 @@
 html, body, #map {
     width: 100%;
     height: 100vh;
+
     margin: 0;
     padding: 0;
 }
@@ -8,6 +9,7 @@ html, body, #map {
 *{
     margin: 0;
     padding: 0;
+
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
@@ -18,11 +20,13 @@ html, body, #map {
 
 ::-webkit-scrollbar-track {
     visibility: hidden;
+
     border-radius: 25px;
 }
 
 ::-webkit-scrollbar-thumb {
     background: #888;
+
     border-radius: 25px;
 }
 
@@ -30,189 +34,239 @@ input:focus {
     outline:none;
 }
 
-.filter-menu {
+#filter-menu {
     position: fixed;
+
     top: 20%;
     left: -250px;
+
     max-height: 100vh;
     width: 250px;
+
     z-index: 500;
+
     background: #202124;
+
     border-radius: 25px;
+
     transition: 0.5s;
 }
 
-.filter-menu.active {
+#filter-menu.active {
     left: 25px;
-
 }
 
-.filter-menu .filter-menu-header {
+#filter-menu .filter-menu-header {
     position: relative;
-    max-height: 75px;
-    padding-left: 5px;
+
     padding-top: 5px;
+    padding-left: 5px;
     margin-bottom: 5px;
+
+    max-height: 75px;
 }
 
-.filter-menu .filter-menu-header .header-title {
+#filter-menu .header-title {
     display: flex;
     align-items: center;
     gap: 20px;
 }
 
-.filter-menu .filter-menu-header .header-text {
+#filter-menu .header-text {
     font-size: 20px;
     font-weight: 600;
+
     color: white;
 }
 
-.filter-menu .filter-menu-header img {
+#filter-menu img {
     width: 60px;
 }
-.filter-menu .filter-menu-header .toggle-button {
+
+#toggle-menu-open-button {
     position: absolute;
     right: -75px;
-    transform: translateY(-50%) rotate(-180deg);
     top: 50%;
+
     width: 50px;
     height: 50px;
-    border-radius: 50%;
-    font-size:20px;
-    background: #345c34;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    transform: translateY(-50%) rotate(-180deg);
+
+    font-size:20px;
+    background: #345c34;
     color: white;
+
+    border-radius: 50%;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.filter-menu.active .filter-menu-header .toggle-button {
+#filter-menu.active #toggle-menu-open-button {
     right: -25px;
 }
 
-.filter-menu .filter-menu-header .toggle-button:hover {
+#filter-menu .toggle-button:hover {
     background: #4b7c4b;
 }
 
 
-.filter-menu .filter-options {
+#filter-menu .filter-options {
     max-height: 400px;
+
     margin-top: 10px;
     margin-bottom: 20px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
+
     overflow-y: auto;
 }
 
-.filter-menu .filter-options .filter .search-form {
-    width: 100%;
+#search-city-form {
     position: relative;
+
+    width: 100%;
 }
 
-.filter-menu .filter-options .filter .search-city-input {
+#search-city-text-field {
     width: 100%;
+
+    padding: 5px 10px 5px 40px;
+
+    font:inherit;
+
     border-radius: 25px;
     border: none;
-    padding: 5px 10px 5px 40px;
-    font:inherit;
 }
 
-.filter-menu .filter-options .filter .search-city-input.active {
-    border-radius: 15px 15px 0 0;
+#search-city-text-field.active {
     margin-bottom:2px;
+
+    border-radius: 15px 15px 0 0;
 }
 
-.filter-menu .filter-options .filter .autocompleteSuggestions {
+#autocompleteSuggestions {
+    position: absolute;
+
     width: 85%;
+
     display: flex;
     flex-direction: column;
+
     background: white;
-    position: absolute;
+
     border-radius: 0 0 15px 15px;
+
     cursor: pointer;
 }
 
-.filter-menu .filter-options .filter .autocompleteSuggestions .autocompleteSuggestion {
-    padding-left:40px;
+.autocompleteSuggestion {
     padding-top: 5px;
+    padding-left:40px;
     padding-bottom: 5px;
+
+    background: white;
 }
 
-.filter-menu .filter-options .filter .autocompleteSuggestions .autocompleteSuggestion:nth-last-child(1) {
+.autocompleteSuggestion:nth-last-child(1) {
     border-radius: 0 0 15px 15px;
 }
 
-.filter-menu .filter-options .filter .autocompleteSuggestions .autocompleteSuggestion:hover {
+.autocompleteSuggestion:hover {
     background: #e9e9e9;
 }
 
-.filter-menu .filter-options .filter .search-form .search-button {
+#delete-city-search-button {
     position: absolute;
+
+    top: 50%;
+    left: 10px;
+
     background: none;
     border:none;
-    top: 50%;
+
     transform: translateY(-50%);
-    left: 10px;
+
     font-size: 20px;
 }
 
-.filter-menu .filter-options .filter {
+#filter-menu .filter {
     width: 85%;
 }
 
-.filter-menu .filter-options .filter-header {
+#filter-menu .filter-header {
     display: flex;
-    border: 2px solid white;
+
     padding: 5px 5px 5px 5px;
+
+    border: 2px solid white;
     border-radius: 25px;
+
     cursor: pointer;
+
     color: white;
+
     overflow: hidden;
 }
 
-.filter-menu .filter-options .filter-header:hover {
+#filter-menu .filter-header:hover {
     background: #2d2d31;
 }
 
-.filter-menu .filter-options .filter-header .expand-filter-button {
+#filter-menu .expand-filter-button {
     margin-left: auto;
+
     cursor: pointer;
 }
 
-.filter-menu .filter-options .filter-content {
-    color: white;
+#filter-menu .filter-content {
     width: 100%;
+
     max-height: 0;
+
+    padding-top: 0;
+    margin-left: 0;
+
     word-break: break-all;
     white-space: normal;
-    overflow: hidden;
+
+    color: white;
+
     transition: max-height 0.3s ease-out, padding-left 0.5s, padding-right 0.5s;
-    margin-left: 0;
-    padding-top: 0;
+
+    overflow: hidden;
 }
 
-.filter-menu .filter-options .filter-content.expanded {
+#filter-menu .filter-content.expanded {
     padding-left: 10px;
     padding-right: 10px;
+
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
 .numbered-pin {
-    background-image: url("../Assets/pin.png");
-    text-align: center;
-    background-size: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    background-image: url("../Assets/pin.png");
+    background-size: 40px;
+
+    text-align: center;
 }
 
 .pin-number {
     margin-bottom: 10px;
+
     color: white;
+
     font-size: large;
 }

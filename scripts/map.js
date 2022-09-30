@@ -24,7 +24,7 @@ const placeMarkers = (cities) => {
             iconAnchor: [20, 50],
             popupAnchor: [0, -40],
             html: `<span class='pin-number'>${obj.partners}</span>`
-        })
+        });
     
         const iconOptions = {
             draggable: false,
@@ -37,26 +37,27 @@ const placeMarkers = (cities) => {
                 "marker": L.marker([obj.lat, obj.long], iconOptions).bindPopup(`${obj.partners} Partner`)
             }
         )
-        markers[markers.length - 1].marker.addTo(map)
     }
+
+    markers.forEach(marker => marker.marker.addTo(map));
 };
 
 const clearMarkers = () => {
     markers.forEach(marker => {
-        marker.marker.remove()
+        marker.marker.remove();
     })
-    markers = []
+    markers = [];
 }
 export const placeFilteredMarkers = (cityName = "") => {
 
     if (cityName === "") {
         loadCities().then(placeMarkers);
-        return
+        return;
     }
 
     loadFilteredCities(cityName).then((filteredCity) =>{
-        clearMarkers()
-        placeMarkers(filteredCity)
+        clearMarkers();
+        placeMarkers(filteredCity);
     })
 }
 
