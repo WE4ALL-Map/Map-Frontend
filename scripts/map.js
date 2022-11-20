@@ -4,7 +4,11 @@ const map = L.map('map', {
     center: [51.330, 10.453],
     zoom: 6,
     minZoom: 6,
-    maxZoom: 9
+    maxZoom: 9,
+    maxBounds: [
+        [55.459583, -2.391338],
+        [45.296025, 22.065829]
+    ],
 });
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
