@@ -105,10 +105,6 @@ const onSuggestionClicked = (internalCityName, visibleCityName) => {
     placeFilteredMarkers(internalCityName);
 };
 
-/*
-This function is executed when the user clicks the citySearch delete button. It deletes the suggestion container,
-sets the citySearch text field value to empty and places all initial markers.
- */
 const onDeleteButtonClicked = (deleteButton) => {
     deleteButton.preventDefault();
 
