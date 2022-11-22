@@ -6,7 +6,7 @@ html, body, #map {
     padding: 0;
 }
 
-*{
+* {
     margin: 0;
     padding: 0;
 
@@ -14,6 +14,7 @@ html, body, #map {
     font-family: 'Poppins', sans-serif;
 }
 
+/* These settings change the look of the scrollbar that may appear in the filter menu.*/
 ::-webkit-scrollbar {
     width: 5px;
 }
@@ -31,7 +32,7 @@ html, body, #map {
 }
 
 input:focus {
-    outline:none;
+    outline: none;
 }
 
 #filter-menu {
@@ -40,8 +41,8 @@ input:focus {
     top: 20%;
     left: -250px;
 
-    max-height: 100vh;
     width: 250px;
+    max-height: 100vh;
 
     z-index: 500;
 
@@ -59,9 +60,10 @@ input:focus {
 #filter-menu .filter-menu-header {
     position: relative;
 
+    margin-bottom: 5px;
+
     padding-top: 5px;
     padding-left: 5px;
-    margin-bottom: 5px;
 
     max-height: 75px;
 }
@@ -83,7 +85,7 @@ input:focus {
     width: 60px;
 }
 
-#toggle-menu-open-button {
+#toggle-menu-button {
     position: absolute;
     right: -75px;
     top: 50%;
@@ -95,9 +97,9 @@ input:focus {
     align-items: center;
     justify-content: center;
 
-    transform: translateY(-50%) rotate(-180deg);
+    transform: translateY(-50%) rotate(180deg);
 
-    font-size:20px;
+    font-size: 20px;
     background: #345c34;
     color: white;
 
@@ -106,14 +108,14 @@ input:focus {
     transition: 0.3s;
 }
 
-#filter-menu.active #toggle-menu-open-button {
+/* Inset the button into the menu when opened */
+#filter-menu.active #toggle-menu-button {
     right: -25px;
 }
 
-#filter-menu .toggle-button:hover {
+#filter-menu #toggle-menu-button:hover {
     background: #4b7c4b;
 }
-
 
 #filter-menu .filter-options {
     max-height: 400px;
@@ -127,27 +129,30 @@ input:focus {
     gap: 15px;
 
     overflow-y: auto;
+
+    /* Firefox specific property */
+    scrollbar-width: thin;
 }
 
-#search-city-form {
+#city-search-form {
     position: relative;
 
     width: 100%;
 }
 
-#search-city-text-field {
+#city-search {
     width: 100%;
 
     padding: 5px 10px 5px 40px;
 
-    font:inherit;
+    font: inherit;
 
     border-radius: 25px;
     border: none;
 }
 
-#search-city-text-field.active {
-    margin-bottom:2px;
+#city-search.active {
+    margin-bottom: 2px;
 
     border-radius: 15px 15px 0 0;
 }
@@ -168,9 +173,7 @@ input:focus {
 }
 
 .autocompleteSuggestion {
-    padding-top: 5px;
-    padding-left:40px;
-    padding-bottom: 5px;
+    padding: 5px 0 5px 40px;
 
     background: white;
 }
@@ -190,11 +193,13 @@ input:focus {
     left: 10px;
 
     background: none;
-    border:none;
+    border: none;
 
     transform: translateY(-50%);
 
     font-size: 20px;
+
+    cursor: pointer;
 }
 
 #filter-menu .filter {
@@ -204,7 +209,7 @@ input:focus {
 #filter-menu .filter-header {
     display: flex;
 
-    padding: 5px 5px 5px 5px;
+    padding: 5px;
 
     border: 2px solid white;
     border-radius: 25px;

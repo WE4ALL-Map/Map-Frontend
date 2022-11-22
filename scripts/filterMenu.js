@@ -1,24 +1,24 @@
 const filterMenu = document.getElementById("filter-menu");
-const toggleMenuOpenButton = document.getElementById("toggle-menu-open-button");
+const toggleMenuButton = document.getElementById("toggle-menu-button");
 
-const filterHeaderList = document.getElementsByClassName("filter-header")
+const filterHeaderList = document.getElementsByClassName("filter-header");
 
-const onToggleMenuOpenButtonClick = () => {
-    filterMenu.classList.toggle("active")
+const onToggleMenuButtonClicked = () => {
+    filterMenu.classList.toggle("active");
 
-    toggleMenuOpenButton.classList.toggle("bx-menu")
-    toggleMenuOpenButton.classList.toggle("bx-chevron-right")
-}
+    toggleMenuButton.classList.toggle("bx-menu");
+    toggleMenuButton.classList.toggle("bx-chevron-right");
+};
 
 const onFilterHeaderClick = (filterHeader) => {
     const filterContent = filterHeader.nextElementSibling;
 
-    const expandFilterButton = filterHeader.querySelector(".expand-filter-button")
+    const expandFilterButton = filterHeader.querySelector(".expand-filter-button");
 
-    switchExpandFilterButtonIcon(expandFilterButton)
+    toggleMenuButtonIcon(expandFilterButton);
 
-    expandFilterContent(filterContent)
-}
+    expandFilterContent(filterContent);
+};
 
 const expandFilterContent = (filterContent) => {
     if (filterContent.style.maxHeight) {
@@ -26,20 +26,21 @@ const expandFilterContent = (filterContent) => {
     } else {
         filterContent.style.maxHeight = filterContent.scrollHeight + "px";
     }
-    filterContent.classList.toggle("expanded");
-}
 
-const switchExpandFilterButtonIcon = (expandFilterButton) => {
-    expandFilterButton.classList.toggle("bx-plus")
-    expandFilterButton.classList.toggle("bx-minus")
-}
+    filterContent.classList.toggle("expanded");
+};
+
+const toggleMenuButtonIcon = (expandFilterButton) => {
+    expandFilterButton.classList.toggle("bx-plus");
+    expandFilterButton.classList.toggle("bx-minus");
+};
 
 const setEventListeners = () => {
-    Array.from(filterHeaderList).forEach((filterHeader) => {
-            filterHeader.addEventListener("click", onFilterHeaderClick.bind(null, filterHeader));
-        }
-    )
-    toggleMenuOpenButton.addEventListener("click", onToggleMenuOpenButtonClick);
-}
+    for (let filterHeader of filterHeaderList) {
+        filterHeader.addEventListener("click", onFilterHeaderClick.bind(null, filterHeader));
+    }
+
+    toggleMenuButton.addEventListener("click", onToggleMenuButtonClicked);
+};
 
 setEventListeners();

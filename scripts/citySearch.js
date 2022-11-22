@@ -2,14 +2,14 @@ import { placeFilteredMarkers } from "./map.js";
 import { fetchCityNames } from "./requests/fetchLocations.js";
 
 
-const searchCityTextField = document.getElementById("search-city-text-field");
+const citySearch = document.getElementById("city-search");
 const deleteSearchButton = document.getElementById("delete-city-search-button");
 const citySearchFilter = document.getElementById("city-search-filter");
 
 const cityNames = await fetchCityNames();
 
-const onSearchCityInput = () => {
-    const searchFieldValue = searchCityTextField.value;
+const onCitySearchInput = () => {
+    const searchFieldValue = citySearch.value;
 
     removeAutocompleteContainerIfExists();
 
@@ -20,25 +20,28 @@ const onSearchCityInput = () => {
 
     const autocompleteSuggestionContainer = createAutocompleteSuggestionContainer();
 
-    Object.entries(cityNames)
-        .filter(([internalCityName, visibleCityName]) => checkIfSearchValueMatches(visibleCityName, searchFieldValue))
-        .forEach(([internalCityName, visibleCityName]) => {
-            const suggestion = createNewSuggestion(internalCityName, visibleCityName, searchFieldValue.length);
-
-            autocompleteSuggestionContainer.appendChild(suggestion);
-        })
+    createAutocompleteSuggestions(cityNames, searchFieldValue, autocompleteSuggestionContainer);
 
     if (autocompleteSuggestionContainer.children.length === 0) {
-        removeAutocompleteContainerIfExists();
         return;
     }
 
-    searchCityTextField.classList.add("active");
-}
+    citySearch.classList.add("active");
+};
+
+const createAutocompleteSuggestions = (cityNames, searchFieldValue, suggestionContainer) => {
+    Object.entries(cityNames)
+        .filter(([_, visibleCityName]) => checkIfSearchValueMatches(visibleCityName, searchFieldValue))
+        .forEach(([internalCityName, visibleCityName]) => {
+            const suggestion = createNewSuggestion(internalCityName, visibleCityName, searchFieldValue.length);
+
+            suggestionContainer.appendChild(suggestion);
+        });
+};
 
 const checkIfSearchValueMatches = (cityName, fieldValue) => {
-    return cityName.substring(0, fieldValue.length).toUpperCase() === fieldValue.toUpperCase()
-}
+    return cityName.substring(0, fieldValue.length).toUpperCase() === fieldValue.toUpperCase();
+};
 
 const createCityName = (city, strongUntil) => {
     const nameTag = document.createElement("span");
@@ -51,68 +54,74 @@ const createCityName = (city, strongUntil) => {
     nameTag.append(city.substring(strongUntil));
 
     return nameTag;
-}
+};
 
 const createAutocompleteSuggestionContainer = () => {
     let autocompleteSuggestionContainer = document.createElement("div");
 
-    autocompleteSuggestionContainer.classList.add("autocompleteSuggestions");
-    autocompleteSuggestionContainer.id = "autocompleteSuggestions"
+    autocompleteSuggestionContainer.id = "autocompleteSuggestions";
 
     citySearchFilter.appendChild(autocompleteSuggestionContainer);
 
     return autocompleteSuggestionContainer;
-}
+};
 
 const createNewSuggestion = (internalCityName, visibleCityName, strongUntil) => {
     const suggestion = document.createElement("div");
     suggestion.classList.add("autocompleteSuggestion");
 
-    const capitalizedCityName = visibleCityName.substring(0, 1).toUpperCase() + visibleCityName.substring(1);
+    const capitalizedCityName = capitalizeCityName(visibleCityName);
 
     const strongCityName = createCityName(capitalizedCityName, strongUntil);
     suggestion.appendChild(strongCityName);
 
-    suggestion.addEventListener("click", onSuggestionClick.bind(null, internalCityName, visibleCityName));
+    suggestion.addEventListener("click", onSuggestionClicked.bind(null, internalCityName, visibleCityName));
 
     return suggestion;
-}
+};
 
-const setCitySearchTextFieldValue = (value) => {
-    searchCityTextField.value = value;
-}
+const capitalizeCityName = (cityName) =>
+    cityName.substring(0, 1).toUpperCase() + cityName.substring(1);
 
 const removeAutocompleteContainerIfExists = () => {
-    const autocompleteContainer = document.getElementById("autocompleteSuggestions")
+    const autocompleteContainer = document.getElementById("autocompleteSuggestions");
 
     if (autocompleteContainer) {
-        autocompleteContainer.remove()
+        autocompleteContainer.remove();
     }
 
-    searchCityTextField.classList.remove("active");
-}
+    /*
+    The "active" class rounds the top left/right corners of the search field. This statement ensures that the
+    field returns to normal when the suggestion list is removed.
+     */
+    citySearch.classList.remove("active");
+};
 
-const onSuggestionClick = (internalCityName, visibleCityName) => {
+const onSuggestionClicked = (internalCityName, visibleCityName) => {
+    removeAutocompleteContainerIfExists();
+
+    citySearch.value = visibleCityName;
+
     placeFilteredMarkers(internalCityName);
+};
 
-    setCitySearchTextFieldValue(visibleCityName);
-
-    removeAutocompleteContainerIfExists();
-}
-
-const onDeleteSearchButtonClick = (deleteSearchButton) => {
-    deleteSearchButton.preventDefault();
-
-    setCitySearchTextFieldValue("");
+/*
+This function is executed when the user clicks the citySearch delete button. It deletes the suggestion container,
+sets the citySearch text field value to empty and places all initial markers.
+ */
+const onDeleteButtonClicked = (deleteButton) => {
+    deleteButton.preventDefault();
 
     removeAutocompleteContainerIfExists();
+
+    citySearch.value = "";
 
     placeFilteredMarkers();
-}
+};
 
 const setInputListeners = () => {
-    searchCityTextField.addEventListener("input", onSearchCityInput);
-    deleteSearchButton.addEventListener("click", onDeleteSearchButtonClick);
-}
+    citySearch.addEventListener("input", onCitySearchInput);
+    deleteSearchButton.addEventListener("click", onDeleteButtonClicked);
+};
 
-setInputListeners()
+setInputListeners();

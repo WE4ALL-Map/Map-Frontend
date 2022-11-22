@@ -12,7 +12,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap',
 }).addTo(map);
 
-let markers = []
+let markers = [];
 
 const placeMarkers = (cities) => {
     for (let city in cities) {
@@ -29,36 +29,36 @@ const placeMarkers = (cities) => {
         const iconOptions = {
             draggable: false,
             icon: numberedPin,
-        }
+        };
 
-        markers.push(
-            {
-                "city": city,
-                "marker": L.marker([obj.lat, obj.long], iconOptions).bindPopup(`${obj.partners} Partner`)
-            }
-        )
+        markers.push({
+            "city": city,
+            "marker": L.marker([obj.lat, obj.long], iconOptions).bindPopup(`${obj.partners} Partner`)
+        });
     }
 
-    markers.forEach(marker => marker.marker.addTo(map));
+    for (let marker of markers) {
+        marker.marker.addTo(map);
+    }
 };
 
 const clearMarkers = () => {
-    markers.forEach(marker => {
+    for (let marker of markers) {
         marker.marker.remove();
-    })
-    markers = [];
-}
-export const placeFilteredMarkers = (cityName = "") => {
+    }
 
-    if (cityName === "") {
+    markers = [];
+};
+export const placeFilteredMarkers = (cityName) => {
+    if (!cityName) {
         loadCities().then(placeMarkers);
         return;
     }
 
-    loadFilteredCities(cityName).then((filteredCity) =>{
+    loadFilteredCities(cityName).then((filteredCity) => {
         clearMarkers();
         placeMarkers(filteredCity);
-    })
-}
+    });
+};
 
 loadCities().then(placeMarkers);
