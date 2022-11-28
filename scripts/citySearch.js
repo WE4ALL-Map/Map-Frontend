@@ -1,6 +1,5 @@
-import { placeFilteredMarkers } from "./map.js";
 import { fetchCityNames } from "./requests/fetchLocations.js";
-
+import { zoomOnCity } from './map.js';
 
 const citySearch = document.getElementById("city-search");
 const deleteSearchButton = document.getElementById("delete-city-search-button");
@@ -12,11 +11,6 @@ const onCitySearchInput = () => {
     const searchFieldValue = citySearch.value;
 
     removeAutocompleteContainerIfExists();
-
-    if (searchFieldValue.length === 0) {
-        placeFilteredMarkers();
-        return;
-    }
 
     const autocompleteSuggestionContainer = createAutocompleteSuggestionContainer();
 
@@ -98,11 +92,11 @@ const removeAutocompleteContainerIfExists = () => {
 };
 
 const onSuggestionClicked = (internalCityName, visibleCityName) => {
+    zoomOnCity(internalCityName);
+
     removeAutocompleteContainerIfExists();
 
     citySearch.value = visibleCityName;
-
-    placeFilteredMarkers(internalCityName);
 };
 
 const onDeleteButtonClicked = (deleteButton) => {
@@ -111,8 +105,6 @@ const onDeleteButtonClicked = (deleteButton) => {
     removeAutocompleteContainerIfExists();
 
     citySearch.value = "";
-
-    placeFilteredMarkers();
 };
 
 const setInputListeners = () => {
