@@ -1,4 +1,4 @@
-import { loadCities, loadFilteredCities } from "./requests/fetchLocations.js";
+import { loadCities } from "./requests/fetchLocations.js";
 
 const map = L.map("map", {
     center: [51.330, 10.453],
@@ -46,26 +46,6 @@ const placeMarkers = (cities) => {
     for (let marker of markers) {
         marker.marker.addTo(map);
     }
-};
-
-const clearMarkers = () => {
-    for (let marker of markers) {
-        marker.marker.remove();
-    }
-
-    markers = [];
-};
-
-export const placeFilteredMarkers = (cityName) => {
-    if (!cityName) {
-        loadCities().then(placeMarkers);
-        return;
-    }
-
-    loadFilteredCities(cityName).then((filteredCity) => {
-        clearMarkers();
-        placeMarkers(filteredCity);
-    });
 };
 
 loadCities().then(placeMarkers);
