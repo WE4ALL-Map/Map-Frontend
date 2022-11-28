@@ -1,5 +1,5 @@
 import { fetchCityNames } from "./requests/fetchLocations.js";
-
+import { zoomOnCity } from './map.js';
 
 const citySearch = document.getElementById("city-search");
 const deleteSearchButton = document.getElementById("delete-city-search-button");
@@ -92,6 +92,8 @@ const removeAutocompleteContainerIfExists = () => {
 };
 
 const onSuggestionClicked = (internalCityName, visibleCityName) => {
+    zoomOnCity(internalCityName)
+
     removeAutocompleteContainerIfExists();
 
     citySearch.value = visibleCityName;

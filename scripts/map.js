@@ -11,6 +11,8 @@ const map = L.map("map", {
     ],
 });
 
+const citiesPromise = loadCities();
+
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 10,
     attribution: "© OpenStreetMap",
@@ -29,7 +31,7 @@ const placeMarkers = (cities) => {
             popupAnchor: [0, -40],
             html: `<span class="pin-number">${cityObj.partners}</span>`,
         });
-    
+
         const iconOptions = {
             draggable: false,
             icon: numberedPin,
@@ -48,4 +50,11 @@ const placeMarkers = (cities) => {
     }
 };
 
-loadCities().then(placeMarkers);
+export const zoomOnCity = (cityName) => {
+    citiesPromise.then((cities) => {
+        const searchedCity = cities[cityName]
+        map.flyTo([searchedCity.lat, searchedCity.long], 9)
+    })
+}
+
+citiesPromise.then(placeMarkers);
