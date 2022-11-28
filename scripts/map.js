@@ -51,11 +51,8 @@ const placeMarkers = (cities) => {
 };
 
 export const zoomOnCity = (cityName) => {
-    for (let marker of markers) {
-        if (marker.city === cityName) {
-            map.flyTo(marker.marker.getLatLng(), mapOptions.maxZoom);
-        }
-    }
+    const searchedMarker = markers.find((marker) => marker.city === cityName);
+    map.flyTo(searchedMarker.getLatLng(), mapOptions.maxZoom);
 }
 
 loadCities().then(placeMarkers);
