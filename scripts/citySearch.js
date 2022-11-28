@@ -92,7 +92,7 @@ const removeAutocompleteContainerIfExists = () => {
 };
 
 const onSuggestionClicked = (internalCityName, visibleCityName) => {
-    zoomOnCity(internalCityName)
+    zoomOnCity(internalCityName);
 
     removeAutocompleteContainerIfExists();
 

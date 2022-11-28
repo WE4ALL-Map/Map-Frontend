@@ -1,6 +1,6 @@
 import { loadCities } from "./requests/fetchLocations.js";
 
-const map = L.map("map", {
+const mapOptions = {
     center: [51.330, 10.453],
     zoom: 6,
     minZoom: 6,
@@ -9,9 +9,9 @@ const map = L.map("map", {
         [55.459583, -2.391338],
         [45.296025, 22.065829]
     ],
-});
+};
 
-const citiesPromise = loadCities();
+const map = L.map("map", mapOptions);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 10,
@@ -51,10 +51,11 @@ const placeMarkers = (cities) => {
 };
 
 export const zoomOnCity = (cityName) => {
-    citiesPromise.then((cities) => {
-        const searchedCity = cities[cityName]
-        map.flyTo([searchedCity.lat, searchedCity.long], 9)
-    })
+    for (let marker of markers) {
+        if (marker.city === cityName) {
+            map.flyTo(marker.marker.getLatLng(), mapOptions.maxZoom);
+        }
+    }
 }
 
-citiesPromise.then(placeMarkers);
+loadCities().then(placeMarkers);
