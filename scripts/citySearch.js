@@ -3,7 +3,7 @@ import { zoomOnCity } from './map.js';
 
 const citySearch = document.getElementById("city-search");
 const deleteSearchButton = document.getElementById("delete-city-search-button");
-const citySearchFilter = document.getElementById("city-search-filter");
+const citySearchFilter = document.getElementById("city-search-form");
 
 const cityNames = await fetchCityNames();
 
