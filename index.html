@@ -17,32 +17,31 @@
 <div id="filter-menu">
     <div class="filter-menu-row">
         <img src="./Assets/we4all_logo.png" alt="">
-        <p>Stadt suchen</p>
+        <label for="city-search">Stadt suchen:</label>
         <form id="city-search-form">
             <input id="city-search" type="text">
             <button class="bx bx-x" id="delete-city-search-button"></button>
         </form>
     </div>
-    <div class= "filter-menu-row">
+    <div class="filter-menu-row">
         <p>Partnertyp: </p>
         <form id="partner-type-form">
             <label class="radio-button-container">
+                <input type="radio" name="partner_type" value="Alles">
+                Alle
+            </label>
+            <label class="radio-button-container">
                 <input type="radio" name="partner_type" value="Designer">
-                <span class="radio-button"></span>
                 Designer
             </label>
             <label class="radio-button-container">
                 <input type="radio" name="partner_type" value="Hersteller">
-                <span class="radio-button"></span>
                 Hersteller
             </label>
         </form>
     </div>
-    <div>
-    </div>
 </div>
 <script type="module" src="scripts/map.js"></script>
-<script type="module" src="scripts/filterMenu.js"></script>
 <script type="module" src="scripts/citySearch.js"></script>
 </body>
 </html>
