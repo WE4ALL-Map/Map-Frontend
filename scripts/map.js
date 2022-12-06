@@ -1,4 +1,5 @@
 import { loadCities } from "./requests/fetchLocations.js";
+import { showShidePanel, hideSidePanel } from "./sidePanel.js";
 
 const mapOptions = {
     center: [51.330, 10.453],
@@ -20,6 +21,44 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 let markers = [];
 
+let activeMarker = undefined;
+
+const setActiveMarker = (city) => {
+    if(activeMarker) {
+        console.log(activeMarker)
+        resetActiveMarker();
+    }
+
+    showShidePanel(city);
+
+    const activePin = markers.find((obj) => obj.city === city).marker;
+    const icon = activePin.getIcon();
+
+    const iconOptions = { ...icon.options, className: "numbered-pin active"};
+    
+    const newIcon = L.divIcon(iconOptions);
+
+    activePin.setIcon(newIcon);
+
+    activeMarker = activePin;
+}
+
+export const resetActiveMarker = () => {
+    if (activeMarker) {
+        hideSidePanel();
+        
+        const icon = activeMarker.getIcon();
+        
+        const iconOptions = { ...icon.options, className: "numbered-pin"};
+        
+        const newIcon = L.divIcon(iconOptions);
+        
+        activeMarker.setIcon(newIcon);
+
+        activeMarker = undefined;
+    }
+}
+
 const placeMarkers = (cities) => {
     for (let city in cities) {
         const cityObj = cities[city];
@@ -37,7 +76,7 @@ const placeMarkers = (cities) => {
             icon: numberedPin,
         };
 
-        const marker = L.marker([cityObj.lat, cityObj.long], iconOptions).bindPopup(`${cityObj.partners} Partner`);
+        const marker = L.marker([cityObj.lat, cityObj.long], iconOptions).on("click", ()=>setActiveMarker(city));
 
         markers.push({
             "city": city,
@@ -57,3 +96,4 @@ export const zoomOnCity = (cityName) => {
 };
 
 loadCities().then(placeMarkers);
+document.addEventListener("blur", resetActiveMarker)

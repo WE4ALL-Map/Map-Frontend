@@ -11,3 +11,9 @@ export const fetchCityNames = async () => {
 
     return await response.json();
 };
+
+export const fetchCityDetails = async (city) => {
+    const berlin = { fullName: "Berlin", designers: 3, manufacturers: 5, designerTags: ["abc","Test","Rapid Prototyping","Produktentwicklung","Und wieder ein Viel zu langer Text, ich frage mich was damit passiert","1","1","1","1","1","1","1","1"], manufacturerTags: ["def", "123", "aldfkjg"] };
+    const munich =  { fullName: "München", designers: 8, manufacturers: 3, designerTags: ["asd","gdf","Rapid Prototyping","1234","hahahaha"], manufacturerTags: ["ghi", "456", "asdasdasd"] };
+    return new Promise((resolve) => resolve(city === "berlin" ? berlin : munich));
+}

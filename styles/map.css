@@ -1,4 +1,6 @@
-html, body, #map {
+html,
+body,
+#map {
     width: 100%;
     height: 100vh;
 
@@ -268,6 +270,9 @@ input:focus {
 
     text-align: center;
 }
+.numbered-pin.active {
+    background-image: url("../Assets/activePin.png");
+}
 
 .pin-number {
     margin-bottom: 10px;
@@ -275,4 +280,95 @@ input:focus {
     color: white;
 
     font-size: large;
+}
+
+#side-panel {
+    position: fixed;
+    background: white;
+
+    top: 50%;
+    transform: translateY(-50%);
+    left: -500px;
+
+    width: 250px;
+    max-height: 100vh;
+    min-height: 500px;
+    padding: 20px;
+
+    border-radius: 25px;
+    border: solid 1px;
+
+    z-index: 500;
+
+    transition: 0.5s;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#side-panel.active {
+    left: 20px !important;
+}
+
+.panel-header {
+    color: black;
+    font-size: xx-large;
+    font-weight: 500;
+}
+
+.partner-information-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.partner-details {
+    margin-top: 5px;
+    font-size: 15px;
+
+    max-height: 100px;
+    
+    display:flex;
+    gap: 5px;
+    justify-content: flex-start;
+    flex-wrap:wrap;
+}
+
+.contact-button {
+    width: 85%;
+    height: 50px;
+
+    background-color: #dd9933;
+    background-image: linear-gradient(to right, #dd9933 0%, #f9ae22 50%, #dd9933 100%);
+    color: white;
+
+    position: absolute;
+    bottom: 20px;
+
+    font-size: 18px;
+}
+
+.pill {
+    background-color: white;
+    border: solid 1px #82b782;
+    color: #518651;
+    font-size: small;
+    border-radius: 16px;
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 20px;
+
+    text-align: start;
+    text-justify: auto;
+
+    padding: 1px 5px;
+}
+.pill[title]:hover::after {
+    border-radius: 16px;
+}
+
+.invisible {
+    visibility: hidden;
 }
