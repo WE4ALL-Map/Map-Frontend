@@ -12,6 +12,11 @@ const onCitySearchInput = () => {
 
     removeAutocompleteContainerIfExists();
 
+    /*If the field is empty, no suggestions should be created*/
+    if (searchFieldValue.length === 0) {
+        return;
+    }
+
     const autocompleteSuggestionContainer = createAutocompleteSuggestionContainer();
 
     createAutocompleteSuggestions(cityNames, searchFieldValue, autocompleteSuggestionContainer);
