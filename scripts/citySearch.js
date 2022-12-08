@@ -1,11 +1,20 @@
-import { fetchCityNames } from "./requests/fetchLocations.js";
+import { loadCities } from "./requests/fetchLocations.js";
 import { zoomOnCity } from './map.js';
 
 const citySearch = document.getElementById("city-search");
 const deleteSearchButton = document.getElementById("delete-city-search-button");
 const citySearchFilter = document.getElementById("city-search-form");
 
-const cityNames = await fetchCityNames();
+const mapCitiesToCityNames = (cities) => {
+    const cityNames = {};
+    for (const city of cities) {
+        cityNames[city.id] = city.display_name;
+    }
+    return cityNames;
+}
+
+const cityNames = await loadCities().then(mapCitiesToCityNames);
+
 
 const onCitySearchInput = () => {
     const searchFieldValue = citySearch.value;
@@ -31,8 +40,8 @@ const onCitySearchInput = () => {
 const createAutocompleteSuggestions = (cityNames, searchFieldValue, suggestionContainer) => {
     Object.entries(cityNames)
         .filter(([_, visibleCityName]) => checkIfSearchValueMatches(visibleCityName, searchFieldValue))
-        .forEach(([internalCityName, visibleCityName]) => {
-            const suggestion = createNewSuggestion(internalCityName, visibleCityName, searchFieldValue.length);
+        .forEach(([cityId, visibleCityName]) => {
+            const suggestion = createNewSuggestion(cityId, visibleCityName, searchFieldValue.length);
 
             suggestionContainer.appendChild(suggestion);
         });
@@ -65,7 +74,7 @@ const createAutocompleteSuggestionContainer = () => {
     return autocompleteSuggestionContainer;
 };
 
-const createNewSuggestion = (internalCityName, visibleCityName, strongUntil) => {
+const createNewSuggestion = (cityId, visibleCityName, strongUntil) => {
     const suggestion = document.createElement("div");
     suggestion.classList.add("autocompleteSuggestion");
 
@@ -74,7 +83,7 @@ const createNewSuggestion = (internalCityName, visibleCityName, strongUntil) => 
     const strongCityName = createCityName(capitalizedCityName, strongUntil);
     suggestion.appendChild(strongCityName);
 
-    suggestion.addEventListener("click", onSuggestionClicked.bind(null, internalCityName, visibleCityName));
+    suggestion.addEventListener("click", onSuggestionClicked.bind(null, cityId, visibleCityName));
 
     return suggestion;
 };
@@ -96,8 +105,8 @@ const removeAutocompleteContainerIfExists = () => {
     citySearch.classList.remove("active");
 };
 
-const onSuggestionClicked = (internalCityName, visibleCityName) => {
-    zoomOnCity(internalCityName);
+const onSuggestionClicked = (cityId, visibleCityName) => {
+    zoomOnCity(cityId);
 
     removeAutocompleteContainerIfExists();
 

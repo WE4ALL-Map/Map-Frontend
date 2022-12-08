@@ -43,20 +43,26 @@
 </div>
 <div id="side-panel" tabindex="0">
     <div id="panel-loading-message">Informationen werden geladen...</div>
-    <div class="panel-header">
-        <span class="header-text" style="color:black;" id="panel-city-title"></span>
+    <div class="panel-header" id="panel-header">
+        <span class="header-text"> WE4ALL in <span id="panel-city-name"></span></span>
     </div>
-    <div class="partner-information-container no-display" id="partner-information-container">
+    <div id="partner-information-container">
+        <div class="partner-count-container">
+            <span >
+                <i class="bx bx-male-female"> </i><span> Partner insgesamt: </span> <span id="partner-count"></span>
+            </span>
+            <span id="designer-row">
+                <i class="bx bx-shape-triangle"></i><span> Design Dienstleister: </span><span id="designer-count"></span>
+            </span>
+            <span id="manufacturer-row">
+                <i class="bx bx-cog"></i><span> Hersteller: </span><span id="manufacturer-count"></span>
+            </span>
+
+            
+        </div>
         <div>
-            <span>Partner: </span> <span id="partner-count"></span>
-        </div>
-        <div id="designer-container" class="no-display">
-            <span>Designer: </span><span id="designer-count"></span>
-            <div id="designer-details" class="partner-details"></div>
-        </div>
-        <div id="manufacturer-container" class="no-display">
-            <span>Hersteller: </span><span id="manufacturer-count"></span>
-            <div id="manufacturer-details" class="partner-details"></div>
+            <span><i class="bx bx-tag"></i> Angebotene Services:</span>
+            <div id="pill-container" class="pill-container"></div>
         </div>
     </div>
     <button class="contact-button" onclick="location.href='https://outlook.office365.com/owa/calendar/WE4ALL@we4all.eu/bookings/'">

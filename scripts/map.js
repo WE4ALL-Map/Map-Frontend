@@ -28,14 +28,14 @@ let markers = [];
 
 let activeMarker = undefined;
 
-const setActiveMarker = (city) => {
+const setActiveMarker = (cityId) => {
     if(activeMarker) {
         resetActiveMarker();
     }
 
-    showShidePanel(city);
+    showShidePanel(cityId);
 
-    const activePin = markers.find((obj) => obj.city === city).marker;
+    const activePin = markers.find((obj) => obj.city === cityId).marker;
     const icon = activePin.getIcon();
 
     const iconOptions = { ...icon.options, className: "numbered-pin active"};
@@ -64,15 +64,14 @@ export const resetActiveMarker = () => {
 }
 
 const placeMarkers = (cities) => {
-    for (let city in cities) {
-        const cityObj = cities[city];
+    for (const city of cities) {
 
         const numberedPin = L.divIcon({
             className: "numbered-pin",
             iconSize: [40, 50],
             iconAnchor: [20, 50],
             popupAnchor: [0, -40],
-            html: `<span class="pin-number">${cityObj.partners}</span>`,
+            html: `<span class="pin-number">${city.partner_count}</span>`,
         });
 
         const iconOptions = {
@@ -80,10 +79,10 @@ const placeMarkers = (cities) => {
             icon: numberedPin,
         };
 
-        const marker = L.marker([cityObj.lat, cityObj.long], iconOptions).on("click", ()=>setActiveMarker(city));
+        const marker = L.marker([city.center.lat, city.center.long], iconOptions).on("click", ()=>setActiveMarker(city.id));
 
         markers.push({
-            "city": city,
+            "city": city.id,
             "marker": marker,
         });
     }
@@ -103,4 +102,3 @@ export const zoomOnCity = (cityName) => {
 
 loadCities().then(placeMarkers);
 map.on("click", resetActiveMarker);
-//document.getElementById("side-panel").addEventListener("focusout", resetActiveMarker)
