@@ -12,7 +12,7 @@ const mapCitiesToCityNames = (cities) => {
     }
     return cityNames;
 }
-
+// fetchCityNames currently not working, but intendet endpoint
 const cityNames = await loadCities().then(mapCitiesToCityNames);
 
 
