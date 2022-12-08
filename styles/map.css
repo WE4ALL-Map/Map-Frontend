@@ -146,6 +146,8 @@ input:focus {
     display: flex;
     flex-direction: column;
 
+    z-index: 700;
+
     background-color: white;
 
     border-radius: 0 0 15px 15px;
