@@ -3,7 +3,7 @@ import { zoomOnCity } from './map.js';
 
 const citySearch = document.getElementById("city-search");
 const deleteSearchButton = document.getElementById("delete-city-search-button");
-const citySearchFilter = document.getElementById("city-search-filter");
+const citySearchFilter = document.getElementById("city-search-form");
 
 const cityNames = await fetchCityNames();
 
@@ -11,6 +11,11 @@ const onCitySearchInput = () => {
     const searchFieldValue = citySearch.value;
 
     removeAutocompleteContainerIfExists();
+
+    /*If the field is empty, no suggestions should be created*/
+    if (searchFieldValue.length === 0) {
+        return;
+    }
 
     const autocompleteSuggestionContainer = createAutocompleteSuggestionContainer();
 

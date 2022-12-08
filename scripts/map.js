@@ -10,10 +10,14 @@ const mapOptions = {
         [55.459583, -2.391338],
         [45.296025, 22.065829]
     ],
+    zoomControl: false,
 };
 
 const map = L.map("map", mapOptions);
 
+L.control.zoom({
+    position: 'topright'
+}).addTo(map);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 10,

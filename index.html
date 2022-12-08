@@ -15,23 +15,30 @@
 <body>
 <div id="map"></div>
 <div id="filter-menu">
-    <header class="filter-menu-header">
-        <div class="header-title">
-            <img src="./Assets/we4all_logo.png" alt="">
-            <span class="header-text">
-                Filter
-            </span>
-        </div>
-        <i class="bx bx-menu" id="toggle-menu-button"></i>
-    </header>
-    <hr/>
-    <div class="filter-options">
-        <div class="filter" id="city-search-filter">
-            <form id="city-search-form">
-                <input id="city-search" type="text">
-                <button class="bx bx-x" id="delete-city-search-button"></button>
-            </form>
-        </div>
+    <div class="filter-menu-row">
+        <img src="./Assets/we4all_logo.png" alt="">
+        <label for="city-search">Stadt suchen:</label>
+        <form id="city-search-form">
+            <input id="city-search" type="text">
+            <button class="bx bx-x" id="delete-city-search-button"></button>
+        </form>
+    </div>
+    <div class="filter-menu-row">
+        <p>Partnertyp: </p>
+        <form id="partner-type-form">
+            <label class="radio-button-container">
+                <input type="radio" name="partner_type" value="Alles">
+                Alle
+            </label>
+            <label class="radio-button-container">
+                <input type="radio" name="partner_type" value="Designer">
+                Designer
+            </label>
+            <label class="radio-button-container">
+                <input type="radio" name="partner_type" value="Hersteller">
+                Hersteller
+            </label>
+        </form>
     </div>
 </div>
 <div id="side-panel" tabindex="0">
@@ -57,7 +64,6 @@
 
 </div>
 <script type="module" src="scripts/map.js"></script>
-<script type="module" src="scripts/filterMenu.js"></script>
 <script type="module" src="scripts/citySearch.js"></script>
 </body>
 </html>
