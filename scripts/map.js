@@ -14,6 +14,7 @@ const mapOptions = {
 
 const map = L.map("map", mapOptions);
 
+
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 10,
     attribution: "© OpenStreetMap",
@@ -25,7 +26,6 @@ let activeMarker = undefined;
 
 const setActiveMarker = (city) => {
     if(activeMarker) {
-        console.log(activeMarker)
         resetActiveMarker();
     }
 
@@ -91,9 +91,12 @@ const placeMarkers = (cities) => {
 
 export const zoomOnCity = (cityName) => {
     const searchedMarker = markers.find((marker) => marker.city === cityName).marker;
+
+    setActiveMarker(cityName);
     
     map.flyTo(searchedMarker.getLatLng(), mapOptions.maxZoom);
 };
 
 loadCities().then(placeMarkers);
-document.addEventListener("blur", resetActiveMarker)
+map.on("click", resetActiveMarker);
+//document.getElementById("side-panel").addEventListener("focusout", resetActiveMarker)

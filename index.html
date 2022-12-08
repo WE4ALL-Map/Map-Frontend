@@ -34,19 +34,20 @@
         </div>
     </div>
 </div>
-<div id="side-panel">
+<div id="side-panel" tabindex="0">
+    <div id="panel-loading-message">Informationen werden geladen...</div>
     <div class="panel-header">
         <span class="header-text" style="color:black;" id="panel-city-title"></span>
     </div>
-    <div class="partner-information-container">
+    <div class="partner-information-container no-display" id="partner-information-container">
         <div>
             <span>Partner: </span> <span id="partner-count"></span>
         </div>
-        <div id="designer-container">
+        <div id="designer-container" class="no-display">
             <span>Designer: </span><span id="designer-count"></span>
             <div id="designer-details" class="partner-details"></div>
         </div>
-        <div id="manufacturer-container">
+        <div id="manufacturer-container" class="no-display">
             <span>Hersteller: </span><span id="manufacturer-count"></span>
             <div id="manufacturer-details" class="partner-details"></div>
         </div>

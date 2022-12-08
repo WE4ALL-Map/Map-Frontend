@@ -321,13 +321,13 @@ input:focus {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    
 }
+
 
 .partner-details {
     margin-top: 5px;
     font-size: 15px;
-
-    max-height: 100px;
     
     display:flex;
     gap: 5px;
@@ -349,26 +349,26 @@ input:focus {
     font-size: 18px;
 }
 
-.pill {
-    background-color: white;
-    border: solid 1px #82b782;
-    color: #518651;
+.pill-container {
+    background-color:  #82b782 ;
+
+    color: white;
     font-size: small;
+    font-weight: bold;
     border-radius: 16px;
     max-width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
-    max-height: 20px;
+    height: 1.5rem;
 
-    text-align: start;
-    text-justify: auto;
+    padding: 5px 10px;
 
-    padding: 1px 5px;
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: center;
 }
-.pill[title]:hover::after {
-    border-radius: 16px;
-}
 
-.invisible {
-    visibility: hidden;
+.no-display {
+    display:none;
 }
