@@ -101,4 +101,11 @@ export const zoomOnCity = (cityName) => {
 };
 
 loadCities().then(placeMarkers);
+
 map.on("click", resetActiveMarker);
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        hideSidePanel();
+        resetActiveMarker();
+    }
+});

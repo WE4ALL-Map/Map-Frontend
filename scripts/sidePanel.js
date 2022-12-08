@@ -31,7 +31,7 @@ export const hideSidePanel = () => {
 
 const fillSidePanel = (viewModel) => {
     loadingMessage.classList.add("no-display");
-    
+
     partnerInformationContainer.classList.remove("no-display");
     panelHeader.classList.remove("no-display");
 
