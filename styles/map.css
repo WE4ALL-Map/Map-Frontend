@@ -20,6 +20,10 @@ input:focus {
     outline: none;
 }
 
+#map:focus {
+    border: thick solid #E59700;
+}
+
 #filter-menu {
     position: fixed;
 
@@ -113,10 +117,6 @@ input:focus {
     color: currentColor;
     background-color: #fff;
 
-    margin: 0;
-
-    font: inherit;
-
     border: medium solid black;
     border-radius: 50%;
 }
@@ -129,15 +129,20 @@ input:focus {
 
     border-radius: 50%;
 
+    background-color: black;
+
     transform: scale(0);
 
     transition: 0.1s transform ease-in-out;
 }
 
 .radio-button-container input:checked:before {
-    background-color: black;
-
     transform: scale(1);
+}
+
+.radio-button-container input:focus {
+    outline: 2px auto #E59700;
+    outline-offset: -2px;
 }
 
 #autocompleteSuggestions {
@@ -158,9 +163,14 @@ input:focus {
 }
 
 .autocompleteSuggestion {
+    appearance: none;
     padding: 5px 0 5px 40px;
 
     background-color: white;
+}
+
+.autocompleteSuggestion:focus {
+    background-color: skyblue;
 }
 
 .autocompleteSuggestion:nth-last-child(1) {
@@ -169,6 +179,10 @@ input:focus {
 
 .autocompleteSuggestion:hover {
     background-color: #e9e9e9;
+}
+
+.autocompleteSuggestion.focused {
+    background-color: skyblue;
 }
 
 #delete-city-search-button {

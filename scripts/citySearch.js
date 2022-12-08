@@ -68,6 +68,7 @@ const createAutocompleteSuggestionContainer = () => {
     let autocompleteSuggestionContainer = document.createElement("div");
 
     autocompleteSuggestionContainer.id = "autocompleteSuggestions";
+    autocompleteSuggestionContainer.dataset.currentlyFocusedElement = -1;
 
     citySearchFilter.appendChild(autocompleteSuggestionContainer);
 
@@ -121,8 +122,81 @@ const onDeleteButtonClicked = (deleteButton) => {
     citySearch.value = "";
 };
 
+const ARROW_UP = 38;
+const ARROW_DOWN = 40;
+const ENTER = 13;
+
+const onKeyPressed = (event) => {
+    const suggestionContainer = document.getElementById("autocompleteSuggestions");
+
+    if (!suggestionContainer) {
+        return;
+    }
+
+    switch (event.keyCode) {
+        case ARROW_UP:
+            onArrowUpPressed(event, suggestionContainer);
+            break;
+        case ARROW_DOWN:
+            onArrowDownPressed(event, suggestionContainer);
+            break;
+        case ENTER:
+            onEnterPressed(event, suggestionContainer);
+            break;
+    }
+};
+
+const clamp = (n, min, max) =>
+    Math.min(Math.max(n, min), max);
+
+const focusSelection = (container, offset) => {
+    const dataset = container.dataset;
+    const suggestions = container.getElementsByClassName("autocompleteSuggestion");
+
+    const topMostSuggestionIndex = 0;
+    const bottomMostSuggestionIndex = suggestions.length - 1;
+    const newFocusIndex = parseInt(dataset.currentlyFocusedElement) + offset;
+
+    // noinspection JSValidateTypes
+    dataset.currentlyFocusedElement = clamp(newFocusIndex, topMostSuggestionIndex, bottomMostSuggestionIndex);
+
+    const suggestionToFocus = suggestions[dataset.currentlyFocusedElement];
+    unfocusAllSuggestions(suggestions);
+    suggestionToFocus.classList.add("focused");
+};
+
+const onArrowUpPressed = (event, suggestionContainer) => {
+    event.preventDefault();
+
+    focusSelection(suggestionContainer, -1);
+};
+
+const onArrowDownPressed = (event, suggestionContainer) => {
+    event.preventDefault();
+
+    focusSelection(suggestionContainer, 1);
+};
+
+const onEnterPressed = (event, suggestionContainer) => {
+    event.preventDefault();
+
+    const suggestionList = suggestionContainer.getElementsByClassName("autocompleteSuggestion");
+
+    const suggestion = suggestionList[suggestionContainer.dataset.currentlyFocusedElement];
+
+    suggestion.click();
+};
+
+const unfocusAllSuggestions = (suggestionList) => {
+    for (const suggestion of suggestionList) {
+        suggestion.classList.remove("focused");
+    }
+};
+
 const setInputListeners = () => {
     citySearch.addEventListener("input", onCitySearchInput);
+    citySearch.addEventListener("keydown", onKeyPressed);
+
     deleteSearchButton.addEventListener("click", onDeleteButtonClicked);
 };
 

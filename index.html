@@ -13,21 +13,21 @@
     <link rel="stylesheet" href="styles/map.css"/>
 </head>
 <body>
-<div id="map"></div>
+<div id="map" tabindex="0"></div>
 <div id="filter-menu">
     <div class="filter-menu-row">
         <img src="./Assets/we4all_logo.png" alt="">
         <label for="city-search">Stadt suchen:</label>
         <form id="city-search-form">
-            <input id="city-search" type="text">
             <button class="bx bx-x" id="delete-city-search-button"></button>
+            <input id="city-search" type="text">
         </form>
     </div>
     <div class="filter-menu-row">
         <p>Partnertyp: </p>
         <form id="partner-type-form">
             <label class="radio-button-container">
-                <input type="radio" name="partner_type" value="Alles">
+                <input type="radio" name="partner_type" value="Alles" checked="checked">
                 Alle
             </label>
             <label class="radio-button-container">
