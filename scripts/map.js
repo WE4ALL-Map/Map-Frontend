@@ -1,5 +1,5 @@
-import {fetchBoroughDetails, fetchCityDetails, loadCities} from "./requests/fetchLocations.js";
-import {hideSidePanel, showSidePanel} from "./sidePanel.js";
+import { fetchBoroughDetails, fetchCityDetails, loadCities } from "./requests/fetchLocations.js";
+import { hideSidePanel, showSidePanel } from "./sidePanel.js";
 
 const mapOptions = {
     center: [51.330, 10.453],
@@ -28,7 +28,7 @@ const map = L.map("map", mapOptions);
 
 let initialMarkerDetails = [];
 
-let updatedMarkerDetails = [];
+let visibleMarkerDetails = [];
 
 let markers = [];
 
@@ -37,19 +37,19 @@ let currentlyVisibleMarkerType = "city";
 let activeMarker;
 
 const setActiveMarker = (markerId) => {
-    if(activeMarker) {
+    if (activeMarker) {
         resetActiveMarker();
     }
 
-    let details = updatedMarkerDetails.find(details => details.id === markerId);
+    let details = getVisibleMarkerDetailsByMarkerId(markerId);
 
     showSidePanel(details);
 
-    const activePin = markers.find(obj => obj.id === markerId).marker;
+    const activePin = getMarkerByMarkerId(markerId);
     const icon = activePin.getIcon();
 
-    const iconOptions = { ...icon.options, className: "numbered-pin active"};
-    
+    const iconOptions = { ...icon.options, className: "numbered-pin active" };
+
     const newIcon = L.divIcon(iconOptions);
 
     activePin.setIcon(newIcon);
@@ -57,16 +57,16 @@ const setActiveMarker = (markerId) => {
     activeMarker = activePin;
 };
 
-export const resetActiveMarker = () => {
+const resetActiveMarker = () => {
     if (activeMarker) {
         hideSidePanel();
-        
+
         const icon = activeMarker.getIcon();
-        
-        const iconOptions = { ...icon.options, className: "numbered-pin"};
-        
+
+        const iconOptions = { ...icon.options, className: "numbered-pin" };
+
         const newIcon = L.divIcon(iconOptions);
-        
+
         activeMarker.setIcon(newIcon);
 
         activeMarker = undefined;
@@ -74,7 +74,7 @@ export const resetActiveMarker = () => {
 };
 
 export const zoomOnMarker = (markerId) => {
-    const searchedMarker = markers.find(marker => marker.id === markerId).marker;
+    const searchedMarker = getMarkerByMarkerId(markerId);
 
     setActiveMarker(markerId);
 
@@ -96,7 +96,7 @@ const initializeMapAndMarkers = async (cities) => {
 
         createMarker(cityDetails.partners.length, cityDetails.center, cityDetails.id, true, "city");
 
-        for(const borough of cityDetails.boroughs) {
+        for (const borough of cityDetails.boroughs) {
             const boroughDetails = await fetchBoroughDetails(city.id, borough.id);
 
             createMarker(boroughDetails.partners.length, boroughDetails.center, boroughDetails.id, false, "borough");
@@ -106,7 +106,7 @@ const initializeMapAndMarkers = async (cities) => {
 
         initialMarkerDetails.push(cityDetails);
     }
-    updatedMarkerDetails = JSON.parse(JSON.stringify(initialMarkerDetails));
+    visibleMarkerDetails = JSON.parse(JSON.stringify(initialMarkerDetails));
 
     updateMarkerVisibility();
 };
@@ -155,15 +155,15 @@ const onMapZoomed = () => {
 
 const updateMarkerVisibility = () => {
     markers.forEach((marker) => {
-        let details = updatedMarkerDetails.find(details => marker.id === details.id);
+        let details = getVisibleMarkerDetailsByMarkerId(marker.id);
 
         marker.visible && details.partners.length ? marker.marker.addTo(map) : marker.marker.remove();
     });
 };
 
 const updateMarkerIcons = () => {
-    updatedMarkerDetails.forEach((details) => {
-        const marker = markers.find(marker => marker.id === details.id).marker;
+    visibleMarkerDetails.forEach((details) => {
+        const marker = getMarkerByMarkerId(details.id);
 
         const icon = marker.getIcon();
 
@@ -174,17 +174,17 @@ const updateMarkerIcons = () => {
 };
 
 export const setMarkerTypeAsVisible = (type) => {
-    updatedMarkerDetails = JSON.parse(JSON.stringify(initialMarkerDetails));
+    visibleMarkerDetails = JSON.parse(JSON.stringify(initialMarkerDetails));
 
     switch (type) {
         case "designer": {
-            updatedMarkerDetails.forEach(details => {
+            visibleMarkerDetails.forEach(details => {
                 details.partners = details.partners.filter(partner => partner.designing);
             });
             break;
         }
         case "manufacturer": {
-            updatedMarkerDetails.forEach(details => {
+            visibleMarkerDetails.forEach(details => {
                 details.partners = details.partners.filter(partner => partner.printing);
             });
         }
@@ -195,6 +195,9 @@ export const setMarkerTypeAsVisible = (type) => {
 
     resetActiveMarker();
 };
+
+const getMarkerByMarkerId = (markerId) => markers.find(marker => marker.id === markerId).marker;
+const getVisibleMarkerDetailsByMarkerId = (markerId) => visibleMarkerDetails.find(details => markerId === details.id);
 
 loadCities().then(initializeMapAndMarkers);
 
