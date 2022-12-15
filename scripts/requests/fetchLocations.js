@@ -11,3 +11,9 @@ export const fetchCityNames = async () => {
 
     return await response.json();
 };
+
+export const fetchCityDetails = async (cityId) => {
+    const response = await fetch(backendURL + 'cities/' + cityId);
+
+    return await response.json();
+}
