@@ -1,5 +1,5 @@
-import { loadCities } from "./requests/fetchLocations.js";
-import { showShidePanel, hideSidePanel } from "./sidePanel.js";
+import {fetchBoroughDetails, fetchCityDetails, loadCities} from "./requests/fetchLocations.js";
+import {hideSidePanel, showSidePanel} from "./sidePanel.js";
 
 const mapOptions = {
     center: [51.330, 10.453],
@@ -13,29 +13,39 @@ const mapOptions = {
     zoomControl: false,
 };
 
+const defaultIconOptions = {
+    className: "numbered-pin",
+    iconSize: [40, 50],
+    iconAnchor: [20, 50],
+    popupAnchor: [0, -40],
+};
+
+const defaultMarkerOptions = {
+    draggable: false,
+};
+
 const map = L.map("map", mapOptions);
 
-L.control.zoom({
-    position: 'topright'
-}).addTo(map);
+let initialMarkerDetails = [];
 
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 12,
-    attribution: "© OpenStreetMap",
-}).addTo(map);
+let updatedMarkerDetails = [];
 
 let markers = [];
 
-let activeMarker = undefined;
+let currentlyVisibleMarkerType = "city";
 
-const setActiveMarker = (cityId) => {
+let activeMarker;
+
+const setActiveMarker = (markerId) => {
     if(activeMarker) {
         resetActiveMarker();
     }
 
-    showShidePanel(cityId);
+    let details = updatedMarkerDetails.find(details => details.id === markerId);
 
-    const activePin = markers.find((obj) => obj.city === cityId).marker;
+    showSidePanel(details);
+
+    const activePin = markers.find(obj => obj.id === markerId).marker;
     const icon = activePin.getIcon();
 
     const iconOptions = { ...icon.options, className: "numbered-pin active"};
@@ -45,7 +55,7 @@ const setActiveMarker = (cityId) => {
     activePin.setIcon(newIcon);
 
     activeMarker = activePin;
-}
+};
 
 export const resetActiveMarker = () => {
     if (activeMarker) {
@@ -61,51 +71,132 @@ export const resetActiveMarker = () => {
 
         activeMarker = undefined;
     }
-}
-
-const placeMarkers = (cities) => {
-    for (const city of cities) {
-
-        const numberedPin = L.divIcon({
-            className: "numbered-pin",
-            iconSize: [40, 50],
-            iconAnchor: [20, 50],
-            popupAnchor: [0, -40],
-            html: `<span class="pin-number">${city.partner_count}</span>`,
-        });
-
-        const iconOptions = {
-            draggable: false,
-            icon: numberedPin,
-        };
-
-        const marker = L.marker([city.center.lat, city.center.long], iconOptions).on("click", ()=>setActiveMarker(city.id));
-
-        markers.push({
-            "city": city.id,
-            "marker": marker,
-        });
-    }
-
-    for (let marker of markers) {
-        marker.marker.addTo(map);
-    }
 };
 
-export const zoomOnCity = (cityName) => {
-    const searchedMarker = markers.find((marker) => marker.city === cityName).marker;
+export const zoomOnMarker = (markerId) => {
+    const searchedMarker = markers.find(marker => marker.id === markerId).marker;
 
-    setActiveMarker(cityName);
-    
+    setActiveMarker(markerId);
+
     map.flyTo(searchedMarker.getLatLng(), mapOptions.maxZoom);
 };
 
-loadCities().then(placeMarkers);
+const initializeMapAndMarkers = async (cities) => {
+    L.control.zoom({
+        position: 'topright'
+    }).addTo(map);
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 12,
+        attribution: "© OpenStreetMap",
+    }).addTo(map);
+
+    for (const city of cities) {
+        const cityDetails = await fetchCityDetails(city.id);
+
+        createMarker(cityDetails.partners.length, cityDetails.center, cityDetails.id, true, "city");
+
+        for(const borough of cityDetails.boroughs) {
+            const boroughDetails = await fetchBoroughDetails(city.id, borough.id);
+
+            createMarker(boroughDetails.partners.length, boroughDetails.center, boroughDetails.id, false, "borough");
+
+            initialMarkerDetails.push(boroughDetails);
+        }
+
+        initialMarkerDetails.push(cityDetails);
+    }
+    updatedMarkerDetails = JSON.parse(JSON.stringify(initialMarkerDetails));
+
+    updateMarkerVisibility();
+};
+
+const createMarker = (partnerCount, position, id, shouldBeVisible, markerType) => {
+    const markerOptions = createNumberedMarkerOptions(partnerCount);
+
+    const marker = L.marker([position.lat, position.long], markerOptions);
+
+    marker.on("click", zoomOnMarker.bind(null, id));
+
+    markers.push({
+        "id": id,
+        "visible": shouldBeVisible,
+        "markerType": markerType,
+        "marker": marker,
+    });
+};
+
+const createNumberedMarkerOptions = (partnerCount) => {
+    const numberedPin = L.divIcon({
+        ...defaultIconOptions,
+        html: `<span class="pin-number">${partnerCount}</span>`,
+    });
+
+    return {
+        defaultMarkerOptions,
+        icon: numberedPin,
+    };
+};
+
+const onMapZoomed = () => {
+    let zoomLevel = map.getZoom();
+
+    if (zoomLevel >= 11 && currentlyVisibleMarkerType === "city") {
+        currentlyVisibleMarkerType = "borough";
+        markers.forEach(marker => marker.visible = marker.markerType === "borough");
+    }
+    else if (zoomLevel <= 10 && currentlyVisibleMarkerType === "borough") {
+        currentlyVisibleMarkerType = "city";
+        markers.forEach(marker => marker.visible = marker.markerType === "city");
+    }
+
+    updateMarkerVisibility();
+};
+
+const updateMarkerVisibility = () => {
+    markers.forEach((marker) => {
+        let details = updatedMarkerDetails.find(details => marker.id === details.id);
+
+        marker.visible && details.partners.length ? marker.marker.addTo(map) : marker.marker.remove();
+    });
+};
+
+const updateMarkerIcons = () => {
+    updatedMarkerDetails.forEach((details) => {
+        const marker = markers.find(marker => marker.id === details.id).marker;
+
+        const icon = marker.getIcon();
+
+        icon.options.html = `<span class="pin-number">${details.partners.length}</span>`;
+
+        marker.setIcon(icon);
+    });
+};
+
+export const setMarkerTypeAsVisible = (type) => {
+    updatedMarkerDetails = JSON.parse(JSON.stringify(initialMarkerDetails));
+
+    switch (type) {
+        case "designer": {
+            updatedMarkerDetails.forEach(details => {
+                details.partners = details.partners.filter(partner => partner.designing);
+            });
+            break;
+        }
+        case "manufacturer": {
+            updatedMarkerDetails.forEach(details => {
+                details.partners = details.partners.filter(partner => partner.printing);
+            });
+        }
+    }
+    updateMarkerVisibility();
+
+    updateMarkerIcons();
+
+    resetActiveMarker();
+};
+
+loadCities().then(initializeMapAndMarkers);
 
 map.on("click", resetActiveMarker);
-document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-        hideSidePanel();
-        resetActiveMarker();
-    }
-});
+map.on("zoomend", onMapZoomed);

@@ -1,5 +1,5 @@
 import { loadCities } from "./requests/fetchLocations.js";
-import { zoomOnCity } from './map.js';
+import { zoomOnMarker } from './map.js';
 
 const citySearch = document.getElementById("city-search");
 const deleteSearchButton = document.getElementById("delete-city-search-button");
@@ -11,7 +11,7 @@ const mapCitiesToCityNames = (cities) => {
         cityNames[city.id] = city.display_name;
     }
     return cityNames;
-}
+};
 // fetchCityNames currently not working, but intendet endpoint
 const cityNames = await loadCities().then(mapCitiesToCityNames);
 
@@ -107,7 +107,7 @@ const removeAutocompleteContainerIfExists = () => {
 };
 
 const onSuggestionClicked = (cityId, visibleCityName) => {
-    zoomOnCity(cityId);
+    zoomOnMarker(cityId);
 
     removeAutocompleteContainerIfExists();
 
