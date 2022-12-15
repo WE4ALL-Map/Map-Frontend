@@ -1,5 +1,3 @@
-import { fetchCityDetails } from './requests/fetchLocations.js';
-
 const sidePanel = document.getElementById("side-panel");
 
 const loadingMessage = document.getElementById("panel-loading-message");
@@ -14,15 +12,17 @@ const manufacturerElement = document.getElementById("manufacturer-row");
 const pillContainer = document.getElementById("pill-container");
 
 
-export const showShidePanel = (cityId) => {
+export const showSidePanel =  (markerDetails) => {
     sidePanel.classList.add("active");
 
     partnerInformationContainer.classList.add("no-display");
     panelHeader.classList.add("no-display");
 
     loadingMessage.classList.remove("no-display");
-    
-    getCityDetails(cityId).then(fillSidePanel);
+
+    let viewModel = mapMarkerDetailsToViewModel(markerDetails);
+
+    fillSidePanel(viewModel);
 };
 
 export const hideSidePanel = () => {
@@ -31,11 +31,11 @@ export const hideSidePanel = () => {
 
 const fillSidePanel = (viewModel) => {
     loadingMessage.classList.add("no-display");
-
+    
     partnerInformationContainer.classList.remove("no-display");
     panelHeader.classList.remove("no-display");
 
-    panelTitleText.innerHTML = viewModel.cityName;
+    panelTitleText.innerHTML = viewModel.markerName;
 
     document.getElementById("partner-count").innerHTML = viewModel.partnerCount;
     if (viewModel.designerCount) {
@@ -58,13 +58,10 @@ const fillSidePanel = (viewModel) => {
     createPills(viewModel.tags);
 };
 
-const getCityDetails = async (cityId) => {
-    return fetchCityDetails(cityId).then(mapCityToViewModel);
-};
 
-const mapCityToViewModel = (city) => {
+const mapMarkerDetailsToViewModel = (markerDetails) => {
     const viewModel = {
-        cityName: "",
+        markerName: "",
         partnerCount: 0,
         designerCount: 0,
         manufacturerCount: 0,
@@ -72,12 +69,12 @@ const mapCityToViewModel = (city) => {
         tags: []
     };
 
-    viewModel.cityName = city.display_name;
-    viewModel.partnerCount = city.partners.length;
+    viewModel.markerName = markerDetails.display_name;
+    viewModel.partnerCount = markerDetails.partners.length;
 
-    let dublicateServices = [];
-    let dublicateTags = [];
-    for (const partner of city.partners) {
+    let duplicateServices = [];
+    let duplicateTags = [];
+    for (const partner of markerDetails.partners) {
         if (partner.designing) {
             viewModel.designerCount++;
         }
@@ -85,12 +82,12 @@ const mapCityToViewModel = (city) => {
             viewModel.manufacturerCount++;
         }
 
-        dublicateServices = dublicateServices.concat(partner.services);
-        dublicateTags = dublicateTags.concat(partner.tags);
+        duplicateServices = duplicateServices.concat(partner.services);
+        duplicateTags = duplicateTags.concat(partner.tags);
     }
 
-    viewModel.services = new Set(dublicateServices);
-    viewModel.tags = new Set(dublicateTags);
+    viewModel.services = new Set(duplicateServices);
+    viewModel.tags = new Set(duplicateTags);
 
     return viewModel;
 };
@@ -106,6 +103,6 @@ const createPills = (services) => {
         pillText.innerHTML = tag;
 
         pill.appendChild(pillText);
-        pillContainer.appendChild(pill)
+        pillContainer.appendChild(pill);
     }
 };
